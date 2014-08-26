@@ -29,6 +29,8 @@ class UniqueLineFinder {
 	public static void main(String[] args) throws Exception {
 
 		Configuration conf = new Configuration();
+        String dir;
+        String inputGZFile;
         String inputFile;
 		
 		Job job = new Job(conf, "UniqueLineFinder");
@@ -42,10 +44,15 @@ class UniqueLineFinder {
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(NullWritable.class);
 
-        inputFile = "/0/data/foo.txt.gz";
-		decompressGZToTextFile(inputFile);
+        dir =  "/0/data/";
+        inputGZFile = "foo.txt.gz";
+        inputFile = "foo.txt";
 
-        FileInputFormat.addInputPath(job, new Path("file://"+inputFile));
+//        dir =  "/Users/neha/workspace/";
+
+		decompressGZToTextFile(dir+inputGZFile);
+
+        FileInputFormat.addInputPath(job, new Path("file://"+dir+inputFile));
         FileOutputFormat.setOutputPath(job, new Path("/tmp/uniquelines"));
 
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
